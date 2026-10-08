@@ -376,6 +376,7 @@ python main.py run --clean-db
 ---
 
 ## Web Dashboard
+<img width="1892" height="926" alt="Screenshot 2026-10-08 113800" src="https://github.com/user-attachments/assets/7c2b122f-ad2e-44d0-8733-e4af8d499464" />
 
 Access at **http://127.0.0.1:8501** after starting with `dashboard` command.
 
