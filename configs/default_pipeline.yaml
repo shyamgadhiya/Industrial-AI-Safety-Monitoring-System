@@ -1,0 +1,97 @@
+pipeline_name: "Industrial Vision Pipeline Orchestrator"
+max_queue_size: 30
+drop_frames_on_backpressure: true
+storage_dir: "data/evidence"
+
+detector:
+  enabled: true
+  device: "cpu"
+  confidence_threshold: 0.30
+  batch_size: 1
+  options:
+    model_type: "rf_detr_small"
+    model_variant: "small"
+    checkpoint_path: "src/models/rfdetr_checkpoint_best_total.pth"
+    confidence_threshold: 0.30       # Fallback confidence threshold
+    
+    # Class-wise thresholds read by the refactored detector
+    class_thresholds:
+      worker: 0.25                   # Worker detection threshold
+      forklift: 0.30                 # Stricter gate for forklifts
+
+    # Temporal consistency settings (grid-cell false-positive suppression)
+    forklift_window: 4               # Frame history window
+    forklift_min_hits: 2             # Hits required in window to emit detection
+
+    target_classes:
+      - "worker"
+      - "forklift"
+      - "person"
+
+tracker:
+  enabled: true
+  device: "cpu"
+  confidence_threshold: 0.30
+  batch_size: 1
+  options:
+    tracker_type: "bytetrack"
+    track_thresh: 0.25
+    track_buffer: 60
+    match_thresh: 0.60
+    min_hits: 1
+
+vitpose:
+  enabled: true
+  device: "auto"
+  confidence_threshold: 0.30
+  batch_size: 4
+  options:
+    model_id: "usyd-community/vitpose-base-simple"
+    fall_angle_threshold: 60.0
+    rapid_drop_px: 45.0
+
+clip:
+  enabled: true
+  device: "auto"
+  confidence_threshold: 0.25
+  batch_size: 2
+  options:
+    model_id: "openai/clip-vit-base-patch32"
+    db_path: "data/milvus_orchestrator.db"
+    crops_dir: "data/evidence/crops"
+    safety_queries:
+      - "worker wearing high visibility safety vest and hardhat"
+      - "worker not wearing safety vest"
+      - "worker fallen on factory floor"
+      - "forklift carrying heavy load"
+
+cameras:
+  - camera_id: "cam_feed_01"
+    name: "Camera Feed 1 - Assembly & Work Area"
+    source: "data/samples/sample_feed1.mp4"
+    target_fps: 25.0
+    sample_interval_sec: 0.0
+    sampling_stride: 1
+    resolution: [1280, 720]
+    enable_detector: true
+    enable_tracker: true
+    enable_vitpose: true
+    enable_clip: true
+    ring_buffer_seconds: 10
+    evidence_pre_seconds: 3.0
+    evidence_post_seconds: 3.0
+
+  - camera_id: "cam_feed_02"
+    name: "Camera Feed 2 - Corridor & Logistics Dock"
+    source: "data/samples/sample_feed2.mp4"
+    target_fps: 25.0
+    sample_interval_sec: 0.0
+    sampling_stride: 1
+    resolution: [1280, 720]
+    enable_detector: true
+    enable_tracker: true
+    enable_vitpose: true
+    enable_clip: true
+    ring_buffer_seconds: 10
+    evidence_pre_seconds: 3.0
+    evidence_post_seconds: 3.0

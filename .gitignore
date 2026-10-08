@@ -1,0 +1,125 @@
+# ============================================================
+# Vision Pipeline Orchestrator — .gitignore
+# ============================================================
+
+# ── Python ───────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ── Virtual Environment ────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+.env
+
+# ── Model Checkpoints (Large Binary Files) ────────────────────
+# The custom trained RF-DETR checkpoint (~122 MB) is excluded.
+# Download and place manually at: src/models/rfdetr_checkpoint_best_total.pth
+src/models/*.pth
+src/models/*.pt
+src/models/*.onnx
+src/models/*.bin
+src/models/*.safetensors
+
+# ── Data & Evidence ────────────────────────────────────────────
+# Evidence clips, snapshots and JSON logs generated at runtime
+data/evidence/
+data/milvus_orchestrator.db/
+data/milvus_test.db/
+data/test_milvus.db/
+data/*.db/
+
+# Sample videos (large binary files — provide your own)
+# Comment out to include samples if they are small enough
+data/samples/
+
+# ── Milvus DB (runtime-generated) ─────────────────────────────
+*.db/
+*.db
+milvus_*.db
+
+# ── IDE / Editor ───────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Jupyter Notebooks ─────────────────────────────────────────
+.ipynb_checkpoints
+
+# ── Test / Coverage Artifacts ─────────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# ── Type Checkers ─────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS Generated ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── Hugging Face Model Cache (CI override) ─────────────────────
+# Local HF cache is not committed; models are downloaded at runtime
+.cache/huggingface/
+
+# ── Temporary / Scratch ────────────────────────────────────────
+tmp/
+temp/
+scratch/
+*.tmp
+*.bak
+*.orig

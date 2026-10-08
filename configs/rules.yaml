@@ -1,0 +1,25 @@
+# Safety and Event rules configuration
+rules:
+  - rule_id: "RULE_001"
+    name: "Worker-Forklift Proximity Violation"
+    enabled: true
+    severity: "CRITICAL"
+    type: "proximity"
+    parameters:
+      class_a: "person"
+      class_b: "forklift"
+      min_distance_pixels: 160.0
+      moving_speed_threshold: 2.5
+      cooldown_seconds: 5.0
+
+  - rule_id: "RULE_002"
+    name: "Worker Fall / Collapse Detection"
+    enabled: true
+    severity: "CRITICAL"
+    type: "ergonomics"
+    parameters:
+      spine_angle_threshold_deg: 65.0
+      aspect_ratio_threshold: 0.85
+      persistence_frames: 4
+      cooldown_seconds: 10.0
+
